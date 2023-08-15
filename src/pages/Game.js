@@ -24,10 +24,14 @@ class Game extends Component {
 
   async componentDidMount() {
     const playerToken = localStorage.getItem('token');
+    console.log(playerToken);
 
     try {
       const questions = await getGameQuestions(playerToken);
+      console.log(questions);
+
       this.setState({ questions }, () => this.newQuestion());
+
       this.startTimer();
     } catch (e) {
       const { history } = this.props;
@@ -84,6 +88,7 @@ class Game extends Component {
     this.newQuestion();
     this.setState({
       show: false,
+      click: false,
     });
   }
 
@@ -122,7 +127,7 @@ class Game extends Component {
                 </button>
               ))}
             </div>
-            {click && (
+            {(click || timer <= 0) && (
               <button
                 type="button"
                 data-testid="btn-next"
